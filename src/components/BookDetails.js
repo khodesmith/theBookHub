@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { app } from "../base";
 import { AuthContext } from "./AuthRoute";
+import firebase from "firebase"
 
 const BookDetails = () => {
   const { currentUser } = useContext(AuthContext);
@@ -11,18 +12,19 @@ const BookDetails = () => {
 
   const [view, setView] = useState([]);
 
-  const viewData = async () => {
-    await app
-      .firestore()
-      .collection("books")
-      .doc(id)
-      .get()
-      .then((doc) => {
-        setView(doc.data());
-      });
-  };
+  
 
   useEffect(() => {
+    const viewData = async () => {
+      await app
+        .firestore()
+        .collection("books")
+        .doc(id)
+        .get()
+        .then((doc) => {
+          setView(doc.data());
+        });
+    };
     viewData();
   }, []);
 
